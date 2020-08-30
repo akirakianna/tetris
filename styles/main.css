@@ -9,6 +9,8 @@ body {
 
 h1 {
   font-family: 'Press Start 2P', cursive;
+  animation: blink 1s steps(4, start) infinite;
+  text-shadow: 0 0 0.2em #fff, 0 0 0.2em #fff, 0 0 0.2em #fff;
 }
 
 .grid {
@@ -17,16 +19,23 @@ h1 {
   flex-wrap: wrap;
   width: 300px;
   height: 600px;
-  border: 0.5rem solid white;
+  /* border: 0.5rem solid white; */
 }
 
 .tile {
   width: 28px;
   height: 28px;
+  background-color: black;
   border: 0.5px solid black;
 }
 
 .tetromino {
-  background-color: black;
+  background-color: #fff;
+}
+
+@keyframes blink {
+   100% {
+     visibility: hidden;
+   }
 }
 

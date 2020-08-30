@@ -122,6 +122,9 @@ function gameSetup() {
   }
 
   //* Ask about this
+  //* Also tried:  > tiles.length - width - 1
+  //* and > tiles.length - 1
+  
   function freeze() {
     if (currentTetromino.some(index => tiles[currentPosition + index + width] > 189)) {
       console.log('hello')
