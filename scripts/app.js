@@ -16,6 +16,15 @@ function gameSetup() {
     tiles.push(tile)
   }
 
+  //* Creating end tiles.
+
+  const taken = [190, 191, 192, 193, 194, 195, 196, 197, 198, 199]
+
+  taken.forEach(takenTile => {
+    tiles[takenTile].classList.add('taken')
+  })
+
+
   //* Creating Tetris pieces * //
   //* Each is an array of arrays of their 4 possible positions (rotations).
 
@@ -124,7 +133,7 @@ function gameSetup() {
   //* Ask about this
   //* Also tried:  > tiles.length - width - 1
   //* and > tiles.length - 1
-  
+
   function freeze() {
     if (currentTetromino.some(index => tiles[currentPosition + index + width] > 189)) {
       console.log('hello')

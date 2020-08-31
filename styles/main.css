@@ -25,12 +25,16 @@ h1 {
 .tile {
   width: 28px;
   height: 28px;
-  background-color: black;
+  background-color: #83f52c;
   border: 0.5px solid black;
 }
 
 .tetromino {
   background-color: #fff;
+}
+
+.taken {
+  border: 1px solid red;
 }
 
 @keyframes blink {
