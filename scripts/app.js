@@ -2,13 +2,15 @@ function gameSetup() {
   const grid = document.querySelector('.grid')
   const gridMini = document.querySelector('.gridMini')
   const startButton = document.querySelector('.startOrPause')
+  const scoreDisplay = document.querySelector('.scoreDisplay')
   const width = 10
   const widthMini = 4
-  const tiles = []
+  let tiles = []
   const tilesMini = []
 
   let timerId 
   let nextRandom = 0
+  let score = 0
  
   //* PLACING THE PIECES FOR GAME *//
 
@@ -123,19 +125,6 @@ function gameSetup() {
     })
   }
 
-  //* Tetris board automation 
-  //* Moves the tetris piece down a row every second.
-
-  // timerId = setInterval(moveDown, 1000)
-
-  // function autoMove() {
-  //   removeTetromino()
-  //   currentPosition += width
-  //   placeTetromino()
-  //   stopTetromino()
-    
-  // }
- 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') {
       moveLeft()
@@ -149,7 +138,7 @@ function gameSetup() {
   })
   
 
-  //! Diff way of doing this?
+  //! Diff way of doing this section ?
 
   function stopTetromino() {
     if (currentTetromino.some(index => tiles[currentPosition + index + width].classList.contains('taken'))) {
@@ -165,8 +154,6 @@ function gameSetup() {
   }
 
   //* MOVING TETRIMINO ON GRID
-
-  //! Diff way of doing this?
 
   function moveLeft() {
     removeTetromino()
@@ -211,11 +198,32 @@ function gameSetup() {
       timerId = setInterval(moveDown, 1000)
       nextRandom = Math.floor(Math.random() * tetrisPieces.length)
       // displayTetrimino()
+      addScore()
     }
   })
+  
+  //! NOT WORKING
+  function addScore() {
+    for (let i = 0; i < 199; i += width) {
+      //* selecting a full row (all tiles in a single row)
+      const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9]
+      if (row.every(index => tiles[index].classList.contains('taken'))) {
+        score += 10
+        scoreDisplay.innerHTML = score
+        row.forEach(index => {
+          tiles[index].classList.remove('taken')
+          // tiles[index].classList.remove('tetromino')
+        })
+        //! remove the row using splice
+        const removedTiles = tiles.splice(i, width)
+        tiles = removedTiles.concat(tiles)
+        tiles.forEach(cell => grid.appendChild(cell))
+      }
+    }
+  }
+
 
   //* Rotating the tetrominos
-
   function rotateTetromino() {
     removeTetromino()
     currentRotation ++
@@ -228,8 +236,7 @@ function gameSetup() {
     placeTetromino()
   }
 
-
-  // MINI GRID LOGIC - doesn't work.
+  //! MINI GRID LOGIC - doesn't work.
 
   //* Mini grid
 
@@ -244,7 +251,7 @@ function gameSetup() {
     tilesMini.push(tileMini)
   }
 
-  //tetrominos without rotations - as only need to display next shape.
+  //next up tetrominos without rotations - as only need to display next shape.
 
   const nextTetrisPiece = [
     [1, widthMini + 1, widthMini * 2 + 1, 2], // orangeRicky,
