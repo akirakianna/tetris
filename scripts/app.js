@@ -1,10 +1,15 @@
 function gameSetup() {
   const grid = document.querySelector('.grid')
+  const gridMini = document.querySelector('.gridMini')
+  const startButton = document.querySelector('.startOrPause')
   const width = 10
+  const widthMini = 4
   const tiles = []
+  const tilesMini = []
 
-  //* Creating base grid.
-
+  let timerId 
+  let nextRandom = 0
+ 
   //* PLACING THE PIECES FOR GAME *//
 
   //* Creating tiles on the grid.
@@ -15,15 +20,15 @@ function gameSetup() {
     grid.appendChild(tile)
     tiles.push(tile)
   }
+  
+  //* Creating end (hidden) tiles.
 
-  //* Creating end tiles.
-
-  const taken = [190, 191, 192, 193, 194, 195, 196, 197, 198, 199]
-
-  taken.forEach(takenTile => {
-    tiles[takenTile].classList.add('taken')
-  })
-
+  for (let i = 200; i < 209; i++) {
+    const taken = document.createElement('div')
+    taken.classList.add('taken')
+    grid.appendChild(taken)
+    tiles.push(taken)
+  }
 
   //* Creating Tetris pieces * //
   //* Each is an array of arrays of their 4 possible positions (rotations).
@@ -56,12 +61,12 @@ function gameSetup() {
 
   //! Reverse Z (Cleveland)
 
-  const cleveland = [
-    [width, width + 1, width * 2, width * 2 + 1],
-    [1, width, width + 1, width * 2],
-    [width, width + 1, width * 2, width * 2 + 1],
-    [1, width, width + 1, width * 2]
-  ]
+  // const cleveland = [
+  //   [width, width + 1, width * 2, width * 2 + 1],
+  //   [1, width, width + 1, width * 2],
+  //   [width, width + 1, width * 2, width * 2 + 1],
+  //   [1, width, width + 1, width * 2]
+  // ]
 
   //! T (TeeWee)
 
@@ -85,7 +90,7 @@ function gameSetup() {
     orangeRicky,
     hero,
     rhodeIsland,
-    cleveland,
+    // cleveland,
     teewee,
     smashboy
   ]
@@ -98,7 +103,7 @@ function gameSetup() {
   //! AND the first rotation from the selected Tetris piece.
   let randomTetromino = Math.floor(Math.random() * tetrisPieces.length)
 
-  const currentTetromino = tetrisPieces[randomTetromino][currentRotation]
+  let currentTetromino = tetrisPieces[randomTetromino][currentRotation]
 
   //* Place the tetromino on board
 
@@ -121,39 +126,144 @@ function gameSetup() {
   //* Tetris board automation 
   //* Moves the tetris piece down a row every second.
 
-  const timerId = setInterval(autoMove, 1000)
+  // timerId = setInterval(moveDown, 1000)
 
-  function autoMove() {
-    removeTetromino()
-    currentPosition += width
-    placeTetromino()
-    freeze()
-  }
+  // function autoMove() {
+  //   removeTetromino()
+  //   currentPosition += width
+  //   placeTetromino()
+  //   stopTetromino()
+    
+  // }
+ 
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      moveLeft()
+    } else if (e.key === 'ArrowRight') {
+      moveRight()
+    } else if (e.key === 'ArrowUp') {
+      rotateTetromino()
+    } else if (e.key === 'ArrowDown') {
+      moveDown()
+    }
+  })
+  
 
-  //* Ask about this
-  //* Also tried:  > tiles.length - width - 1
-  //* and > tiles.length - 1
+  //! Diff way of doing this?
 
-  function freeze() {
-    if (currentTetromino.some(index => tiles[currentPosition + index + width] > 189)) {
-      console.log('hello')
-      clearInterval(timerId)
+  function stopTetromino() {
+    if (currentTetromino.some(index => tiles[currentPosition + index + width].classList.contains('taken'))) {
+      currentTetromino.forEach(index => tiles[currentPosition + index].classList.add('taken'))
+      // Next tetromino falling
+      randomTetromino = nextRandom
+      nextRandom = Math.floor(Math.random() * tetrisPieces.length)
+      currentTetromino = tetrisPieces[randomTetromino][currentRotation]
+      currentPosition = 4
+      placeTetromino()
+      displayTetrimino()
     }
   }
+
+  //* MOVING TETRIMINO ON GRID
+
+  //! Diff way of doing this?
+
+  function moveLeft() {
+    removeTetromino()
+    // logic to make sure the tetromino can't go off of the left side of grid
+    // indexes are 10, 20, 30 and so on - so if they a remainder of 0.
+    const leftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0)
+    if (!leftEdge) currentPosition -= 1
+    // logic to account for if there is another tetromino already in those tiles.
+    if (currentTetromino.some(index => tiles[currentPosition + index].classList.contains('taken'))) {
+      currentPosition += 1
+    }
+    placeTetromino()
+  }
+
+  function moveRight() {
+    removeTetromino()
+    // if index is divisible by width and deeply equals width - 1, means you are at the right edge.
+    const rightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1)
+    if (!rightEdge) currentPosition += 1
+    if (currentTetromino.some(index => tiles[currentPosition + index].classList.contains('taken'))) {
+      currentPosition -= 1
+    }
+    placeTetromino()
+  }
+
+  function moveDown() {
+    removeTetromino()
+    currentPosition = currentPosition += width
+    placeTetromino()
+    stopTetromino()
+  }
+
+  startButton.addEventListener('click', () => {
+    //* If timerId is true, clear interval and set to null
+    //* Else when start button is clicked, draw tetromino in current position 
+    //* and move down every second.
+    if (timerId) {
+      clearInterval(timerId)
+      timerId = null
+    } else {
+      placeTetromino()
+      timerId = setInterval(moveDown, 1000)
+      nextRandom = Math.floor(Math.random() * tetrisPieces.length)
+      // displayTetrimino()
+    }
+  })
+
+  //* Rotating the tetrominos
+
+  function rotateTetromino() {
+    removeTetromino()
+    currentRotation ++
+    // if current rotation index is equal to amount of rotations in our current shape (4),
+    // go back to first shape in array.
+    if (currentRotation === currentTetromino.length) {
+      currentRotation = 0
+    }
+    currentTetromino = tetrisPieces[randomTetromino][currentRotation]
+    placeTetromino()
+  }
+
+
+  // MINI GRID LOGIC - doesn't work.
+
+  //* Mini grid
+
+  const displayTiles = document.querySelectorAll('.gridMini div')
+  const displayIndex = 0
+
+
+  for (let i = 0; i < widthMini ** 2; i ++) {
+    const tileMini = document.createElement('div')
+    tileMini.classList.add('tileMini')
+    gridMini.appendChild(tileMini)
+    tilesMini.push(tileMini)
+  }
+
+  //tetrominos without rotations - as only need to display next shape.
+
+  const nextTetrisPiece = [
+    [1, widthMini + 1, widthMini * 2 + 1, 2], // orangeRicky,
+    [1, widthMini + 1, widthMini * 2 + 1, widthMini * 3 + 1],//hero,
+    [0, widthMini, widthMini + 1, widthMini * 2 + 1], //rhodeIsland,
+    [1, widthMini, widthMini + 1, widthMini + 2], // teewee,
+    [0, 1, widthMini, widthMini + 1] //smashboy
+  ]
+
+  function displayTetrimino() {
+    displayTiles.forEach(tile => {
+      tile.classList.remove('tetromino')
+    })
+    nextTetrisPiece[nextRandom].forEach(index => {
+      displayTiles[displayIndex + index].classList.add('tetromino')
+    })
+  }  
+
 }
-
-  // function stopTetromino() {
-  //   if (currentTetromino.some(index => tiles[currentPosition + index + width].contains('taken'))) {
-  //     currentTetromino.forEach(index => tiles[currentPosition + index].classList.add('taken'))
-  //     randomTetromino = Math.floor(Math.random() * tetrisPieces.length)
-  //     currentTetromino = tetrisPieces[randomTetromino][currentRotation]
-  //     currentPosition = 4
-  //     placeTetromino()
-  //   }
-  // }
-
-
-
 
 
 window.addEventListener('load', gameSetup)
