@@ -236,7 +236,7 @@ function gameSetup() {
     placeTetromino()
   }
 
-  //! MINI GRID LOGIC - doesn't work.
+  //! MINI GRID LOGIC - not working.
 
   //* Mini grid
 
