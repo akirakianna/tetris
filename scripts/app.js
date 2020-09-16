@@ -57,10 +57,10 @@ function gameSetup() {
   //! Z (Rhode Island)
 
   const rhodeIsland = [
-    [width + 1, width + 2, width * 2, width * 2 + 1],
     [0, width, width + 1, width * 2 + 1],
     [width + 1, width + 2, width * 2, width * 2 + 1],
-    [0, width, width + 1, width * 2 + 1]
+    [0, width, width + 1, width * 2 + 1],
+    [width + 1, width + 2, width * 2, width * 2 + 1]
   ]
 
   //! Reverse Z (Cleveland)
@@ -200,11 +200,13 @@ function gameSetup() {
       placeTetromino()
       timerId = setInterval(moveDown, 1000)
       nextRandom = Math.floor(Math.random() * tetrisPieces.length)
-      // displayTetrimino()
+      displayTetrimino()
+      
     }
   })
   
-  //! NOT WORKING
+  //! double row issue
+
   function addScore() {
     for (let i = 0; i < tiles.length; i += width) {
       //* selecting a full row (all tiles in a single row)
@@ -244,35 +246,35 @@ function gameSetup() {
 
   //* Mini grid
 
-  // const displayTiles = document.querySelectorAll('.gridMini div')
-  // const displayIndex = 0
+  const displayTiles = document.querySelectorAll('.gridMini div')
+  const displayIndex = 0
 
 
-  // for (let i = 0; i < widthMini ** 2; i ++) {
-  //   const tileMini = document.createElement('div')
-  //   tileMini.classList.add('tileMini')
-  //   gridMini.appendChild(tileMini)
-  //   tilesMini.push(tileMini)
-  // }
+  for (let i = 0; i < widthMini ** 2; i ++) {
+    const tileMini = document.createElement('div')
+    tileMini.classList.add('tileMini')
+    gridMini.appendChild(tileMini)
+    tilesMini.push(tileMini)
+  }
 
-  // //next up tetrominos without rotations - as only need to display next shape.
+  //next up tetrominos without rotations - as only need to display next shape.
 
-  // const nextTetrisPiece = [
-  //   [1, widthMini + 1, widthMini * 2 + 1, 2], // orangeRicky,
-  //   [1, widthMini + 1, widthMini * 2 + 1, widthMini * 3 + 1],//hero,
-  //   [0, widthMini, widthMini + 1, widthMini * 2 + 1], //rhodeIsland,
-  //   [1, widthMini, widthMini + 1, widthMini + 2], // teewee,
-  //   [0, 1, widthMini, widthMini + 1] //smashboy
-  // ]
+  const nextTetrisPiece = [
+    [1, widthMini + 1, widthMini * 2 + 1, 2], // orangeRicky,
+    [1, widthMini + 1, widthMini * 2 + 1, widthMini * 3 + 1],//hero,
+    [0, widthMini, widthMini + 1, widthMini * 2 + 1], //rhodeIsland,
+    [1, widthMini, widthMini + 1, widthMini + 2], // teewee,
+    [0, 1, widthMini, widthMini + 1] //smashboy
+  ]
 
-  // function displayTetrimino() {
-  //   displayTiles.forEach(tile => {
-  //     tile.classList.remove('tetromino')
-  //   })
-  //   nextTetrisPiece[nextRandom].forEach(index => {
-  //     displayTiles[displayIndex + index].classList.add('tetromino')
-  //   })
-  // }  
+  function displayTetrimino() {
+    displayTiles.forEach(tile => {
+      tile.classList.remove('tetromino')
+    })
+    nextTetrisPiece[nextRandom].forEach(index => {
+      displayTiles[displayIndex + index].classList.add('tetromino')
+    })
+  }  
 
 }
 
