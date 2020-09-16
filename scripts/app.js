@@ -8,6 +8,7 @@ function gameSetup() {
   let tiles = []
   const tilesMini = []
 
+  
   let timerId 
   let nextRandom = 0
   let score = 0
@@ -34,6 +35,7 @@ function gameSetup() {
 
   //* Creating Tetris pieces * //
   //* Each is an array of arrays of their 4 possible positions (rotations).
+  //* Never changing these values, only updating the current position. (data representation)
 
   //! L (Orange Ricky)
 
@@ -148,8 +150,9 @@ function gameSetup() {
       nextRandom = Math.floor(Math.random() * tetrisPieces.length)
       currentTetromino = tetrisPieces[randomTetromino][currentRotation]
       currentPosition = 4
+      addScore()
       placeTetromino()
-      displayTetrimino()
+      // displayTetrimino()
     }
   }
 
@@ -198,21 +201,22 @@ function gameSetup() {
       timerId = setInterval(moveDown, 1000)
       nextRandom = Math.floor(Math.random() * tetrisPieces.length)
       // displayTetrimino()
-      addScore()
     }
   })
   
   //! NOT WORKING
   function addScore() {
-    for (let i = 0; i < 199; i += width) {
+    for (let i = 0; i < tiles.length; i += width) {
       //* selecting a full row (all tiles in a single row)
       const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9]
-      if (row.every(index => tiles[index].classList.contains('taken'))) {
+      console.log('Row 212')
+      if (row.every(i => tiles[i].classList.contains('tetromino'))) {
+        console.log('Row 214')
         score += 10
         scoreDisplay.innerHTML = score
-        row.forEach(index => {
-          tiles[index].classList.remove('taken')
-          // tiles[index].classList.remove('tetromino')
+        row.forEach(i => {
+          tiles[i].classList.remove('tetromino')
+  
         })
         //! remove the row using splice
         const removedTiles = tiles.splice(i, width)
@@ -240,35 +244,35 @@ function gameSetup() {
 
   //* Mini grid
 
-  const displayTiles = document.querySelectorAll('.gridMini div')
-  const displayIndex = 0
+  // const displayTiles = document.querySelectorAll('.gridMini div')
+  // const displayIndex = 0
 
 
-  for (let i = 0; i < widthMini ** 2; i ++) {
-    const tileMini = document.createElement('div')
-    tileMini.classList.add('tileMini')
-    gridMini.appendChild(tileMini)
-    tilesMini.push(tileMini)
-  }
+  // for (let i = 0; i < widthMini ** 2; i ++) {
+  //   const tileMini = document.createElement('div')
+  //   tileMini.classList.add('tileMini')
+  //   gridMini.appendChild(tileMini)
+  //   tilesMini.push(tileMini)
+  // }
 
-  //next up tetrominos without rotations - as only need to display next shape.
+  // //next up tetrominos without rotations - as only need to display next shape.
 
-  const nextTetrisPiece = [
-    [1, widthMini + 1, widthMini * 2 + 1, 2], // orangeRicky,
-    [1, widthMini + 1, widthMini * 2 + 1, widthMini * 3 + 1],//hero,
-    [0, widthMini, widthMini + 1, widthMini * 2 + 1], //rhodeIsland,
-    [1, widthMini, widthMini + 1, widthMini + 2], // teewee,
-    [0, 1, widthMini, widthMini + 1] //smashboy
-  ]
+  // const nextTetrisPiece = [
+  //   [1, widthMini + 1, widthMini * 2 + 1, 2], // orangeRicky,
+  //   [1, widthMini + 1, widthMini * 2 + 1, widthMini * 3 + 1],//hero,
+  //   [0, widthMini, widthMini + 1, widthMini * 2 + 1], //rhodeIsland,
+  //   [1, widthMini, widthMini + 1, widthMini + 2], // teewee,
+  //   [0, 1, widthMini, widthMini + 1] //smashboy
+  // ]
 
-  function displayTetrimino() {
-    displayTiles.forEach(tile => {
-      tile.classList.remove('tetromino')
-    })
-    nextTetrisPiece[nextRandom].forEach(index => {
-      displayTiles[displayIndex + index].classList.add('tetromino')
-    })
-  }  
+  // function displayTetrimino() {
+  //   displayTiles.forEach(tile => {
+  //     tile.classList.remove('tetromino')
+  //   })
+  //   nextTetrisPiece[nextRandom].forEach(index => {
+  //     displayTiles[displayIndex + index].classList.add('tetromino')
+  //   })
+  // }  
 
 }
 
