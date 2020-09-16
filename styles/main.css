@@ -34,10 +34,6 @@ h1 {
   border: 0.5px solid black;
 }
 
-.tetromino {
-  background-color: #fff;
-}
-
 .gridMini {
   display: flex;
   flex-direction: row;
@@ -73,4 +69,9 @@ h1 {
      visibility: hidden;
    }
 }
+
+.tetromino {
+  background-color: #fff;
+}
+
 
