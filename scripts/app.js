@@ -7,6 +7,13 @@ function gameSetup() {
   const widthMini = 4
   const tilesMini = []
   const displayIndex = 0
+  const colors = [
+    '#FD5F00',
+    '#ff6ec7',
+    '#ccff00',
+    '#08f7fe',
+    '#9d72ff'
+  ]
   
   let tiles = []
   let timerId 
@@ -136,6 +143,7 @@ function gameSetup() {
   function placeTetromino() {
     currentTetromino.forEach((index) => {
       tiles[currentPosition + index].classList.add('tetromino')
+      tiles[currentPosition + index].style.backgroundColor = colors[randomTetromino]
     })
   }
 
@@ -146,6 +154,7 @@ function gameSetup() {
   function removeTetromino() {
     currentTetromino.forEach((index) => {
       tiles[currentPosition + index].classList.remove('tetromino')
+      tiles[currentPosition + index].style.backgroundColor = ''
     })
   }
 
@@ -176,6 +185,7 @@ function gameSetup() {
       currentTetromino = tetrisPieces[randomTetromino][currentRotation]
       currentPosition = 4
       placeTetromino()
+      displayTetrimino()
       addScore()
       gameOver()
     }
@@ -239,6 +249,7 @@ function gameSetup() {
         scoreDisplay.innerHTML = score
         row.forEach(i => {
           tiles[i].classList.remove('tetromino')
+          tiles[i].style.backgroundColor = ''
         })
         //! remove the row using splice
         const removedTiles = tiles.splice(i, width)
@@ -250,31 +261,35 @@ function gameSetup() {
     }
   }
 
+  //! FIX
+
   //* Rotating the tetrominos
   function rotateTetromino() {
-    if (!(leftEdge || rightEdge)) {
-      removeTetromino()
-      currentRotation ++
+  
+    removeTetromino()
+    currentRotation ++
 
-      // if current rotation index is equal to amount of rotations in our current shape (4),
-      // go back to first shape in array.
-      if (currentRotation === currentTetromino.length) {
-        currentRotation = 0
-      }
-      currentTetromino = tetrisPieces[randomTetromino][currentRotation]
-    
-      //* if conditional for left edge update current position
-      placeTetromino()
+    // if current rotation index is equal to amount of rotations in our current shape (4),
+    // go back to first shape in array.
+    if (currentRotation === currentTetromino.length) {
+      currentRotation = 0
     }
+    currentTetromino = tetrisPieces[randomTetromino][currentRotation]
+    
+    //* if conditional for left edge update current position
+    placeTetromino()
+    
   }
 
   //* Displaying next up Tetromino
   function displayTetrimino() {
     tilesMini.forEach(tile => {
       tile.classList.remove('tetromino')
+      tile.style.backgroundColor = ''
     })
     nextTetrisPiece[nextRandom].forEach(index => {
       tilesMini[displayIndex + index].classList.add('tetromino')
+      tilesMini[displayIndex + index].style.backgroundColor = colors[nextRandom]
     })
   }  
   

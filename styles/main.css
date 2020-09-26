@@ -22,15 +22,21 @@ h1 {
   flex-direction: row;
   flex-wrap: wrap;
   margin-top: 2rem;
+  margin-right: 1rem;
   width: 250px;
   height: 500px;
-  border: 0.3rem solid black;
+  border: 0.3rem solid #0310ea;
+  background: black;
+  box-shadow: 
+  0px 0px 40px 15px #535eeb,
+  0 0 50px #fff,
+  0 0 50px 25px #fff;
 }
 
 .tile {
   width: 25px;
   height: 25px;
-  background-color: #83f52c;
+  background-color: black;
   /* border: 0.5px solid black; */
 }
 
@@ -49,12 +55,13 @@ h1 {
   width: 100px;
   height: 100px;
   border: 0.3rem solid black;
+  background-color: #0310ea;
 }
 
 .tileMini {
   width: 25px;
   height: 25px;
-  background-color: #83f52c;
+  background-color: #0310ea;
 }
 
 .startOrPause {
