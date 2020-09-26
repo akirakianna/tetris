@@ -33,8 +33,6 @@ function gameSetup() {
     tiles.push(taken)
   }
 
-  //! MINI GRID LOGIC - not working.
-
   //* Creating mini grid tiles.
 
   for (let i = 0; i < widthMini ** 2; i ++) {
@@ -130,6 +128,9 @@ function gameSetup() {
 
   let currentTetromino = tetrisPieces[randomTetromino][currentRotation]
 
+  const leftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0)
+  const rightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1)
+
   //* Place the tetromino on board
 
   function placeTetromino() {
@@ -169,13 +170,14 @@ function gameSetup() {
     if (currentTetromino.some(index => tiles[currentPosition + index + width].classList.contains('taken'))) {
       currentTetromino.forEach(index => tiles[currentPosition + index].classList.add('taken'))
       // Next tetromino falling
-      addScore()
+      // addScore()
       randomTetromino = nextRandom
       nextRandom = Math.floor(Math.random() * tetrisPieces.length)
       currentTetromino = tetrisPieces[randomTetromino][currentRotation]
       currentPosition = 4
-      // displayTetrimino()
       placeTetromino()
+      addScore()
+      gameOver()
     }
   }
 
@@ -228,8 +230,6 @@ function gameSetup() {
     }
   })
   
-  //! double row issue
-
   function addScore() {
     for (let i = 0; i < tiles.length; i += width) {
       //* selecting a full row (all tiles in a single row)
@@ -252,16 +252,20 @@ function gameSetup() {
 
   //* Rotating the tetrominos
   function rotateTetromino() {
-    removeTetromino()
-    currentRotation ++
-    // if current rotation index is equal to amount of rotations in our current shape (4),
-    // go back to first shape in array.
-    if (currentRotation === currentTetromino.length) {
-      currentRotation = 0
+    if (!(leftEdge || rightEdge)) {
+      removeTetromino()
+      currentRotation ++
+
+      // if current rotation index is equal to amount of rotations in our current shape (4),
+      // go back to first shape in array.
+      if (currentRotation === currentTetromino.length) {
+        currentRotation = 0
+      }
+      currentTetromino = tetrisPieces[randomTetromino][currentRotation]
+    
+      //* if conditional for left edge update current position
+      placeTetromino()
     }
-    currentTetromino = tetrisPieces[randomTetromino][currentRotation]
-    //* if conditional for left edge update current position
-    placeTetromino()
   }
 
   //* Displaying next up Tetromino
@@ -273,6 +277,17 @@ function gameSetup() {
       tilesMini[displayIndex + index].classList.add('tetromino')
     })
   }  
+  
+  //* Game over!
+
+  function gameOver() {
+    if (currentTetromino.some(index => tiles[currentPosition + index].classList.contains('taken'))) {
+      scoreDisplay.innerHTML = 'Game over'
+      clearInterval(timerId)
+    }
+  }
+
+
 }
 
 
