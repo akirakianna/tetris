@@ -11,6 +11,7 @@ function gameSetup() {
     '#FD5F00',
     '#ff6ec7',
     '#ccff00',
+    'red',
     '#08f7fe',
     '#9d72ff'
   ]
@@ -55,6 +56,7 @@ function gameSetup() {
     [1, widthMini + 1, widthMini * 2 + 1, 2], // orangeRicky,
     [1, widthMini + 1, widthMini * 2 + 1, widthMini * 3 + 1],//hero,
     [0, widthMini, widthMini + 1, widthMini * 2 + 1], //rhodeIsland,
+    [1, widthMini + 1, widthMini, widthMini * 2], // cleveland
     [1, widthMini, widthMini + 1, widthMini + 2], // teewee,
     [0, 1, widthMini, widthMini + 1] //smashboy
   ]
@@ -90,13 +92,13 @@ function gameSetup() {
   ]
 
   //! Reverse Z (Cleveland)
-
-  // const cleveland = [
-  //   [width, width + 1, width * 2, width * 2 + 1],
-  //   [1, width, width + 1, width * 2],
-  //   [width, width + 1, width * 2, width * 2 + 1],
-  //   [1, width, width + 1, width * 2]
-  // ]
+  
+  const cleveland = [
+    [1, width + 1, width, width * 2],
+    [width, width + 1, width * 2 + 1, width * 2 + 2],
+    [1, width + 1, width, width * 2],
+    [width, width + 1, width * 2 + 1, width * 2 + 2]
+  ]
 
   //! T (TeeWee)
 
@@ -120,7 +122,7 @@ function gameSetup() {
     orangeRicky,
     hero,
     rhodeIsland,
-    // cleveland,
+    cleveland,
     teewee,
     smashboy
   ]
