@@ -11,7 +11,7 @@ function gameSetup() {
     '#FD5F00',
     '#ff6ec7',
     '#ccff00',
-    'red',
+    '#00FF00',
     '#08f7fe',
     '#9d72ff'
   ]
@@ -20,6 +20,8 @@ function gameSetup() {
   let timerId 
   let nextRandom = 0
   let score = 0
+  let rotate = true
+  // let startGame = false
  
   //* PLACING THE PIECES FOR GAME *//
 
@@ -131,14 +133,33 @@ function gameSetup() {
   let currentPosition = 4
   //* Starting from the first rotation in a single Tetris piece's array.
   let currentRotation = 0
+  
   //! This selects a random item in my tetrisPieces array,
   //! AND the first rotation from the selected Tetris piece.
   let randomTetromino = Math.floor(Math.random() * tetrisPieces.length)
-
   let currentTetromino = tetrisPieces[randomTetromino][currentRotation]
+  
+  // const leftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0)
+  // const rightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1)
 
-  const leftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0)
-  const rightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1)
+  //* Edge check
+
+  // function edgeCheck() {
+  //   const leftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0)
+  //   const rightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1)
+  //   if (leftEdge || rightEdge) {
+  //   rotate = false
+  //   } else if (!leftEdge && !rightEdge) {
+  //   rotateTetromino()
+  //   }
+  // }
+
+  // function edgeCheck() {
+  //   while ((currentTetromino.some(index => (currentPosition + index) % width === 0)) || (currentTetromino.some(index => (currentPosition + index) % width === width - 1))) {
+  //    rotate = false
+  //   }
+  //   rotateTetromino()
+  // }
 
   //* Place the tetromino on board
 
@@ -149,7 +170,7 @@ function gameSetup() {
     })
   }
 
-  placeTetromino()
+  // placeTetromino()
 
   //* Remove the tetromino from board
 
@@ -226,7 +247,14 @@ function gameSetup() {
     stopTetromino()
   }
 
+  function moveAlong() {
+    //! if any part in last row - can move left or right??
+  }
+
   startButton.addEventListener('click', () => {
+    // if (startGame) {
+    //   return
+    // } 
     //* If timerId is true, clear interval and set to null
     //* Else when start button is clicked, draw tetromino in current position 
     //* and move down every second.
@@ -234,14 +262,14 @@ function gameSetup() {
       clearInterval(timerId)
       timerId = null
     } else {
+      // startGame = true
       placeTetromino()
       timerId = setInterval(moveDown, 1000)
       nextRandom = Math.floor(Math.random() * tetrisPieces.length)
-      displayTetrimino()
-      
+      displayTetrimino() 
     }
   })
-  
+
   function addScore() {
     for (let i = 0; i < tiles.length; i += width) {
       //* selecting a full row (all tiles in a single row)
@@ -263,24 +291,25 @@ function gameSetup() {
     }
   }
 
-  //! FIX
-
+  //! Bug to fix
+  //! two rows - move entire shape back a row - create tiles on either side ..?
   //* Rotating the tetrominos
   function rotateTetromino() {
-  
+    const leftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0)
+    const rightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1)
+    if (leftEdge || rightEdge) {
+    rotate = false
+    } else if (!leftEdge && !rightEdge) {
     removeTetromino()
     currentRotation ++
-
     // if current rotation index is equal to amount of rotations in our current shape (4),
     // go back to first shape in array.
     if (currentRotation === currentTetromino.length) {
       currentRotation = 0
     }
     currentTetromino = tetrisPieces[randomTetromino][currentRotation]
-    
-    //* if conditional for left edge update current position
     placeTetromino()
-    
+  }
   }
 
   //* Displaying next up Tetromino
@@ -299,12 +328,17 @@ function gameSetup() {
 
   function gameOver() {
     if (currentTetromino.some(index => tiles[currentPosition + index].classList.contains('taken'))) {
-      scoreDisplay.innerHTML = 'Game over'
+      // tiles.forEach(tile => {
+      //   tile.classList.remove('tetromino')
+      //   tile.style.backgroundColor = ''
+      // })
+      // if (tiles[currentPosition + index].classList.contains('tetrimino')) {
+      //   tiles[currentPosition + index].classList.remove('tetromino')
+      // }
       clearInterval(timerId)
+      scoreDisplay.innerHTML = 'Game over'
     }
   }
-
-
 }
 
 

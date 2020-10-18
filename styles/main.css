@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 body {
-  background-color: #83f52c;
+  background-color: #35212A;
+  /* background-color: #83f52c; */
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 h1 {
@@ -25,12 +27,12 @@ h1 {
   margin-right: 1rem;
   width: 250px;
   height: 500px;
-  border: 0.3rem solid #0310ea;
+  border: 0.3rem solid #ffdef3;
   background: black;
   box-shadow: 
   0 0 50px #fff,            /* outer white */
-  -10px 0 80px #f0f,        /* outer left magenta */
-  10px 0 80px #0ff; 
+  -10px 0 80px #ff61be,        /* outer left magenta */
+  10px 0 80px #3b55ce; 
   /* box-shadow: 
   0px 0px 40px 15px #535eeb,
   0 0 50px #fff,
@@ -58,14 +60,15 @@ h1 {
   flex-wrap: wrap;
   width: 100px;
   height: 100px;
-  border: 0.3rem solid black;
-  background-color: #0310ea;
+  border: 0.3rem solid #ffdef3;
+  background-color: #000;
+  box-shadow: 12px 12px 2px 1px #ffd300;
 }
 
 .tileMini {
   width: 25px;
   height: 25px;
-  background-color: #0310ea;
+  background-color: #0000;
 }
 
 .startOrPause {
@@ -93,13 +96,15 @@ h1 {
   background-color: #fff;
 }
 
+
 @media screen and (min-width: 300px) {
   .grids {
     flex-direction: column;
   }
 }
 
-@media screen and (min-width: 520px) {
+/* @media screen and (min-width: 520px) {
+
   .grid {
     width: 180px;
     height: 360px; 
@@ -108,8 +113,8 @@ h1 {
     width:17.5px;
     height: 17.5px;
     /* border: 1px solid white; */
-  }
-} 
+  /* }
+}   */
 
 @media screen and (min-width: 550px) {
 
@@ -118,17 +123,19 @@ h1 {
   }
 
   .grid {
-    width: 262px;
-    height: 480px; 
+    width: 250px;
+  height: 500px;
     /* align-items: center; */
     justify-content: center;
   }
   .tile {
-    width:22px;
-    height: 22px;
+    width:25px;
+    height: 25px;
     /* border: 1px solid white; */
   }
 }
+
+
 
 
 
