@@ -21,7 +21,7 @@ function gameSetup() {
   let nextRandom = 0
   let score = 0
   let rotate = true
-  // let startGame = false
+  // let endGame = false
  
   //* PLACING THE PIECES FOR GAME *//
 
@@ -139,28 +139,6 @@ function gameSetup() {
   let randomTetromino = Math.floor(Math.random() * tetrisPieces.length)
   let currentTetromino = tetrisPieces[randomTetromino][currentRotation]
   
-  // const leftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0)
-  // const rightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1)
-
-  //* Edge check
-
-  // function edgeCheck() {
-  //   const leftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0)
-  //   const rightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1)
-  //   if (leftEdge || rightEdge) {
-  //   rotate = false
-  //   } else if (!leftEdge && !rightEdge) {
-  //   rotateTetromino()
-  //   }
-  // }
-
-  // function edgeCheck() {
-  //   while ((currentTetromino.some(index => (currentPosition + index) % width === 0)) || (currentTetromino.some(index => (currentPosition + index) % width === width - 1))) {
-  //    rotate = false
-  //   }
-  //   rotateTetromino()
-  // }
-
   //* Place the tetromino on board
 
   function placeTetromino() {
@@ -247,11 +225,9 @@ function gameSetup() {
     stopTetromino()
   }
 
-  function moveAlong() {
-    //! if any part in last row - can move left or right??
-  }
 
   startButton.addEventListener('click', () => {
+    // endGame = false
     // if (startGame) {
     //   return
     // } 
@@ -292,24 +268,24 @@ function gameSetup() {
   }
 
   //! Bug to fix
-  //! two rows - move entire shape back a row - create tiles on either side ..?
+  //! two rows - move entire shape back a row 
   //* Rotating the tetrominos
   function rotateTetromino() {
     const leftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0)
     const rightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1)
     if (leftEdge || rightEdge) {
-    rotate = false
+      rotate = false
     } else if (!leftEdge && !rightEdge) {
-    removeTetromino()
-    currentRotation ++
-    // if current rotation index is equal to amount of rotations in our current shape (4),
-    // go back to first shape in array.
-    if (currentRotation === currentTetromino.length) {
-      currentRotation = 0
+      removeTetromino()
+      currentRotation ++
+      // if current rotation index is equal to amount of rotations in our current shape (4),
+      // go back to first shape in array.
+      if (currentRotation === currentTetromino.length) {
+        currentRotation = 0
+      }
+      currentTetromino = tetrisPieces[randomTetromino][currentRotation]
+      placeTetromino()
     }
-    currentTetromino = tetrisPieces[randomTetromino][currentRotation]
-    placeTetromino()
-  }
   }
 
   //* Displaying next up Tetromino
@@ -323,18 +299,11 @@ function gameSetup() {
       tilesMini[displayIndex + index].style.backgroundColor = colors[nextRandom]
     })
   }  
-  
+
   //* Game over!
 
   function gameOver() {
     if (currentTetromino.some(index => tiles[currentPosition + index].classList.contains('taken'))) {
-      // tiles.forEach(tile => {
-      //   tile.classList.remove('tetromino')
-      //   tile.style.backgroundColor = ''
-      // })
-      // if (tiles[currentPosition + index].classList.contains('tetrimino')) {
-      //   tiles[currentPosition + index].classList.remove('tetromino')
-      // }
       clearInterval(timerId)
       scoreDisplay.innerHTML = 'Game over'
     }

@@ -75,7 +75,7 @@ h1 {
   margin: 2rem;
   padding: 1rem;
   font-family: 'Press Start 2P', cursive;
-  color: #83f52c;
+  color: #FFF;
   background-color: black;
 }
 
@@ -84,6 +84,7 @@ h1 {
   font-family: 'Press Start 2P', cursive;
   font-size: 0.8rem;
   margin-top: 1rem;
+  color: #ffd300;
 }
 
 @keyframes blink {
